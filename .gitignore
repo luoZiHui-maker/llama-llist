@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+*.db
+uploads/
+
+# HarmonyOS / DevEco
+.idea/
+*.iml
+node_modules/
+build/

@@ -1,0 +1,90 @@
+import { request } from '../common/network/httpClient';
+import { Note } from '../models/Note';
+import router from '@ohos.router';
+
+@Entry
+@Component
+struct Index {
+  @State notes: Note[] = [];
+  @State isLoading: boolean = true;
+
+  aboutToAppear() {
+    this.fetchNotes();
+  }
+
+  async fetchNotes() {
+    try {
+      this.isLoading = true;
+      const data = await request<Note[]>('/notes/', 'GET');
+      this.notes = data;
+    } catch (e) {
+      console.error('加载笔记失败', JSON.stringify(e));
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  build() {
+    Column() {
+      // 标题栏
+      Row() {
+        Text('📝 灵感笔记')
+          .fontSize(24)
+          .fontWeight(FontWeight.Bold);
+        Blank();
+        Button('新建')
+          .onClick(() => {
+            router.pushUrl({ url: 'pages/NoteEdit' });
+          })
+      }
+      .width('100%')
+      .padding(16);
+
+      // 笔记列表
+      if (this.isLoading) {
+        LoadingProgress().height(50).margin({ top: 50 });
+      } else if (this.notes.length === 0) {
+        Column() {
+          Text('暂无笔记，点击右上角新建')
+            .fontSize(16)
+            .fontColor('#999')
+        }.layoutWeight(1).justifyContent(FlexAlign.Center);
+      } else {
+        List({ space: 12 }) {
+          ForEach(this.notes, (note: Note) => {
+            ListItem() {
+              Column() {
+                Text(note.title)
+                  .fontSize(18)
+                  .fontWeight(FontWeight.Medium)
+                  .maxLines(1);
+                Text(note.content || '无内容')
+                  .fontSize(14)
+                  .fontColor('#666')
+                  .maxLines(2)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis });
+                Text(new Date(note.created_at).toLocaleString())
+                  .fontSize(12)
+                  .fontColor('#999')
+                  .margin({ top: 8 });
+              }
+              .width('100%')
+              .padding(12)
+              .backgroundColor('#F5F5F5')
+              .borderRadius(12)
+            }
+            .onClick(() => {
+              // 后续实现详情页，暂不处理
+              console.info('点击笔记', note.id);
+            });
+          }, (note: Note) => note.id.toString())
+        }
+        .layoutWeight(1)
+        .scrollBar(BarState.Auto)
+      }
+    }
+    .width('100%')
+    .height('100%')
+    .backgroundColor('#FFF')
+  }
+}
