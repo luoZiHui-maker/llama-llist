@@ -19,3 +19,13 @@ class Note(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     tag_id = Column(Integer, ForeignKey("tags.id"), nullable=True)
     tag = relationship("Tag", back_populates="notes")
+    embedding = Column(Text, nullable=True)  # 存储向量（JSON 字符串）
+
+class Todo(Base):
+    __tablename__ = "todos"
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(200), nullable=False)
+    status = Column(String(20), default="pending")  # pending, completed, delayed
+    deadline = Column(DateTime, nullable=True)
+    note_id = Column(Integer, ForeignKey("notes.id"), nullable=True)
+    note = relationship("Note", backref="todos")

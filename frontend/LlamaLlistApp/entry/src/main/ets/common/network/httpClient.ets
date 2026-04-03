@@ -1,7 +1,7 @@
 import http from '@ohos.net.http';
+import { AppConfig } from '../constants/Config';
 
-// 替换为你的电脑局域网 IP（如 192.168.1.100）
-const BASE_URL = 'http://10.0.2.2:8000';
+const BASE_URL = AppConfig.BASE_URL;
 
 export async function request<T>(url: string, method: string, data?: object): Promise<T> {
   const httpRequest = http.createHttp();
@@ -9,8 +9,8 @@ export async function request<T>(url: string, method: string, data?: object): Pr
     method: method as http.RequestMethod,
     header: { 'Content-Type': 'application/json' },
     extraData: data ? JSON.stringify(data) : undefined,
-    connectTimeout: 60000,
-    readTimeout: 60000,
+    connectTimeout: AppConfig.CONNECT_TIMEOUT,
+    readTimeout: AppConfig.READ_TIMEOUT,
   };
   try {
     const response = await httpRequest.request(`${BASE_URL}${url}`, options);
