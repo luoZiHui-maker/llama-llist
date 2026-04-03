@@ -1,3 +1,16 @@
+- [🦙 Llama Llist – 灵感笔记与待办清单](#-llama-llist--灵感笔记与待办清单)
+  - [📚 技术栈](#-技术栈)
+  - [📁 目录结构](#-目录结构)
+  - [🚀 启动指南](#-启动指南)
+    - [后端启动](#后端启动)
+    - [前端启动](#前端启动)
+  - [API 接口概览](#api-接口概览)
+  - [前端 BASE\_URL 配置](#前端-base_url-配置)
+  - [📌 数据库现状与待完善之处](#-数据库现状与待完善之处)
+  - [🤖 为第三次作业预留的 AI 扩展点](#-为第三次作业预留的-ai-扩展点)
+
+
+
 # 🦙 Llama Llist – 灵感笔记与待办清单
 
 > 一个集笔记记录与任务管理于一体的效率工具。支持多模态笔记、标签分类、待办状态机、搜索筛选，并为后续 AI 功能预留扩展点。
@@ -71,6 +84,7 @@ llama-llist/
    cd backend
 
 2. **创建并激活虚拟环境**
+   ```bash
     Windows (PowerShell):
     python -m venv venv
     .\venv\Scripts\Activate.ps1
@@ -80,9 +94,11 @@ llama-llist/
     source venv/bin/activate
 
 3. **安装依赖**
+   ```bash
    pip install -r requirements.txt
 
 4. **启动服务**
+   ```bash
    uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 --log-level warning
 
 ### 前端启动
